@@ -1,4 +1,5 @@
 uploads/*
 !uploads/.gitkeep
+!uploads/.htaccess
 config/database.php
 .DS_Store
