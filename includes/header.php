@@ -6,12 +6,17 @@ $pageTitle   = $pageTitle ?? 'Home';
 $currentPage = basename($_SERVER['PHP_SELF']);
 $isLoggedIn  = isset($_SESSION['user_id']);
 $userRole    = $_SESSION['role'] ?? null;
+
+$navName    = $_SESSION['full_name'] ?? '';
+$navFirst   = $navName !== '' ? explode(' ', trim($navName))[0] : '';
+$navInitial = $navName !== '' ? strtoupper(mb_substr($navName, 0, 1)) : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0F766E">
   <meta name="description" content="CampusConnect - accommodation, events, lost and found, marketplace and student services in one place.">
   <title><?= htmlspecialchars($pageTitle) ?> | <?= SITE_NAME ?></title>
 
@@ -50,10 +55,12 @@ $userRole    = $_SESSION['role'] ?? null;
 
       <?php elseif ($userRole === 'admin'): ?>
         <a href="<?= BASE_URL ?>/admin/dashboard.php">Admin Panel</a>
+        <span class="user-chip"><span class="avatar"><?= htmlspecialchars($navInitial) ?></span> <?= htmlspecialchars($navFirst) ?></span>
         <a href="<?= BASE_URL ?>/auth/logout.php" class="btn btn-outline btn-sm">Logout</a>
 
       <?php else: ?>
         <a href="<?= BASE_URL ?>/student/dashboard.php">Dashboard</a>
+        <span class="user-chip"><span class="avatar"><?= htmlspecialchars($navInitial) ?></span> <?= htmlspecialchars($navFirst) ?></span>
         <a href="<?= BASE_URL ?>/auth/logout.php" class="btn btn-outline btn-sm">Logout</a>
       <?php endif; ?>
     </nav>

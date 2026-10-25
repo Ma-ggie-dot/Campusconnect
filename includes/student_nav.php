@@ -2,20 +2,50 @@
 // includes/student_nav.php - sidebar for all student pages
 $current = basename($_SERVER['PHP_SELF']);
 
-$menu = [
-  'dashboard.php'     => ['fa-gauge',              'Dashboard'],
-  'announcements.php' => ['fa-bullhorn',           'Announcements'],
-  'events.php'        => ['fa-calendar-days',      'Events'],
-  'accommodation.php' => ['fa-house',              'Accommodation'],
-  'lost-found.php'    => ['fa-magnifying-glass',   'Lost & Found'],
-  'marketplace.php'   => ['fa-cart-shopping',      'Marketplace'],
-  'requests.php'      => ['fa-screwdriver-wrench', 'Service Requests'],
+$groups = [
+  'Overview' => [
+    'dashboard.php'     => ['fa-gauge',              'Dashboard'],
+  ],
+  'Campus life' => [
+    'announcements.php' => ['fa-bullhorn',           'Announcements'],
+    'events.php'        => ['fa-calendar-days',      'Events'],
+  ],
+  'Services' => [
+    'accommodation.php' => ['fa-house',              'Accommodation'],
+    'lost-found.php'    => ['fa-magnifying-glass',   'Lost & Found'],
+    'marketplace.php'   => ['fa-cart-shopping',      'Marketplace'],
+    'requests.php'      => ['fa-screwdriver-wrench', 'Service Requests'],
+  ],
 ];
+
+$currentLabel = 'Menu';
+foreach ($groups as $items) {
+    foreach ($items as $file => [$icon, $label]) {
+        if ($file === $current) { $currentLabel = $label; }
+    }
+}
+
+$sideName = $_SESSION['full_name'] ?? 'Student';
 ?>
-<aside class="side" aria-label="Student menu">
-  <?php foreach ($menu as $file => [$icon, $label]): ?>
-    <a href="<?= BASE_URL ?>/student/<?= $file ?>" class="<?= $current === $file ? 'active' : '' ?>">
-      <i class="fa-solid <?= $icon ?>"></i> <?= e($label) ?>
-    </a>
-  <?php endforeach; ?>
-</aside>
+<div class="side-wrap">
+  <button type="button" class="side-toggle" id="sideToggle" aria-expanded="false" aria-controls="sideMenu">
+    <span><i class="fa-solid fa-bars-staggered"></i><?= e($currentLabel) ?></span>
+    <i class="fa-solid fa-chevron-down chev"></i>
+  </button>
+
+  <aside class="side" id="sideMenu" aria-label="Student menu">
+    <div class="side-user">
+      <div class="avatar"><?= e(strtoupper(mb_substr($sideName, 0, 1))) ?></div>
+      <div><strong><?= e($sideName) ?></strong><span>Student</span></div>
+    </div>
+
+    <?php foreach ($groups as $groupName => $items): ?>
+      <div class="side-label"><?= e($groupName) ?></div>
+      <?php foreach ($items as $file => [$icon, $label]): ?>
+        <a href="<?= BASE_URL ?>/student/<?= $file ?>" class="<?= $current === $file ? 'active' : '' ?>">
+          <i class="fa-solid <?= $icon ?>"></i> <?= e($label) ?>
+        </a>
+      <?php endforeach; ?>
+    <?php endforeach; ?>
+  </aside>
+</div>

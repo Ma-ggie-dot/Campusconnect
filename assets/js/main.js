@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('navToggle');
   const links  = document.getElementById('navLinks');
 
-  // 1. Mobile menu open/close
+  // 1. Top menu: mobile open/close
   if (toggle && links) {
     toggle.addEventListener('click', () => {
       const isOpen = links.classList.toggle('open');
@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         : '<i class="fa-solid fa-bars"></i>';
     });
 
-    // Close the menu when a link is tapped
     links.querySelectorAll('a').forEach(a =>
       a.addEventListener('click', () => {
         links.classList.remove('open');
@@ -24,13 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  // 2. Add shadow to the header when scrolling
+  // 2. Sidebar menu: open/close on small screens
+  const sideWrap   = document.querySelector('.side-wrap');
+  const sideToggle = document.getElementById('sideToggle');
+  if (sideWrap && sideToggle) {
+    sideToggle.addEventListener('click', () => {
+      const isOpen = sideWrap.classList.toggle('open');
+      sideToggle.setAttribute('aria-expanded', isOpen);
+    });
+  }
+
+  // 3. Shadow on the header when scrolling
   window.addEventListener('scroll', () => {
     if (header) header.classList.toggle('scrolled', window.scrollY > 10);
   });
 
-  // 3. Auto-hide alert messages after 5 seconds
- document.querySelectorAll('.alert:not(.alert-persist)').forEach(alert => {
+  // 4. Auto-hide alerts after 5 seconds (error boxes marked alert-persist stay)
+  document.querySelectorAll('.alert:not(.alert-persist)').forEach(alert => {
     setTimeout(() => {
       alert.style.transition = 'opacity .4s';
       alert.style.opacity = '0';
